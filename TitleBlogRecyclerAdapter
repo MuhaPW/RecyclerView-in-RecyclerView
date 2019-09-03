@@ -1,0 +1,66 @@
+package com.release.test;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TitleBlogRecyclerAdapter extends RecyclerView.Adapter<TitleBlogRecyclerAdapter.ViewHolder> {
+
+    //Резервируем переменные
+    private static List<ArrayList> array_list;
+    private Context context;
+
+    public TitleBlogRecyclerAdapter(List array_list){ //Создаем конструктор
+        this.array_list = array_list; //Cохроняем объект в переменной array_list
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        context = viewGroup.getContext(); //Инициализируем
+        View view = LayoutInflater.from(context).inflate(R.layout.list_recycler_adapter, viewGroup,false); //Инициализируем
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        viewHolder.setView(array_list.get(i)); //Вызываем метод setView и передаем item(i). Например если i ровно 0, передаем item1
+        /** item1 и item2 объект класса ArrayList! */
+    }
+
+    @Override
+    public int getItemCount() {
+        return array_list.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView item_text;
+        RecyclerView recyclerView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            item_text = itemView.findViewById(R.id.item_text); //Инициализируем
+            recyclerView = itemView.findViewById(R.id.recyclerView); //Инициализируем
+        }
+
+        public void setView(ArrayList<String> item_list){
+            item_text.setText(item_list.get(0)); //Берем титул
+            ItemBlogRecyclerAdapter itemBlogRecyclerAdapter = new ItemBlogRecyclerAdapter(item_list); //Инициализируем и передаем item_list
+            /** В item_list хранится либо объект item1 либо объект item2 */
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext())); //Устанавливаем LayoutManager
+            recyclerView.setAdapter(itemBlogRecyclerAdapter); //Устанавливаем адаптер
+        }
+    }
+}
