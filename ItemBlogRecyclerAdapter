@@ -1,0 +1,70 @@
+package com.release.test;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ItemBlogRecyclerAdapter extends RecyclerView.Adapter<ItemBlogRecyclerAdapter.ViewHolder> {
+
+    private static List<String> item_list;
+    private Context context;
+
+    public ItemBlogRecyclerAdapter(List item_list){
+        /** Все как в предедущий раз, только теперь в item_list хранит в себе String */
+        /** В передедущий раз там было item1 или item2, то есть там было объекты типа ArrayList*/
+        this.item_list = item_list;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        context = viewGroup.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.list_recycler_adapter, viewGroup,false);
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        viewHolder.setView();
+    }
+
+    @Override
+    public int getItemCount() {
+        return item_list.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView item_text;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            item_text = itemView.findViewById(R.id.item_text); //Инициализируем
+            /** Обратите внимание что мы не инициализируем recyclerView, так как он нам больше не нужен*/
+        }
+
+        public void setView(){
+            for (int i = 1; i < item_list.size(); i++){
+                item_text.setText(item_list.get(i));
+                //Устанавливаем текст.
+                //i начинается с 1, потому что item_list.get(0) ровно титулу. И его мы уже устанавили.
+            }
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) item_text.getLayoutParams(); //Берем все параметры item_text (TextView)
+            layoutParams.setMarginStart(20); //Двигаем item_text на 20 в право
+            item_text.setLayoutParams(layoutParams); //Устанавливаем параметры
+        }
+    }
+}
+
+
